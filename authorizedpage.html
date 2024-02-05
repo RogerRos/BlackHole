@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Selector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #fileList {
+            list-style: none;
+            padding: 0;
+        }
+        #fileList li {
+            margin-bottom: 10px;
+        }
+        .file-link {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>File Selector</h2>
+    <input type="file" id="fileInput" multiple>
+    <button onclick="uploadFiles()">Choose File</button>
+    <ul id="fileList"></ul>
+</div>
+
+<script>
+    function uploadFiles() {
+        var files = document.getElementById('fileInput').files;
+        var fileList = document.getElementById('fileList');
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var fileName = file.name;
+            var fileSize = getFileSize(file.size);
+
+            var listItem = document.createElement('li');
+            var fileLink = document.createElement('a');
+            fileLink.href = URL.createObjectURL(file);
+            fileLink.textContent = fileName + ' (' + fileSize + ')';
+            fileLink.className = 'file-link';
+            listItem.appendChild(fileLink);
+
+            var deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.onclick = function() {
+                listItem.remove();
+            };
+            listItem.appendChild(deleteBtn);
+
+            fileList.appendChild(listItem);
+        }
+    }
+
+    function getFileSize(size) {
+        if (size === 0) return '0 Bytes';
+        var k = 1024;
+        var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+        var i = Math.floor(Math.log(size) / Math.log(k));
+        return parseFloat((size / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+</script>
+
+</body>
+</html>
