@@ -98,15 +98,19 @@
     <div class="grid">
         <div class="card">
             <h3>Pin</h3>
-            <p>with pin</p>
-        </div>
-        <div class="card">
-            <h3>Free</h3>
-            <p>without pin</p>
+            <form id="pinForm" onsubmit="checkPin(); return false;">
+                <label for="pin">code:</label>
+                <input type="text" id="pin" name="pin" required>
+                <button type="submit">Submit</button>
+            </form>
         </div>
         <div class="card">
             <h3>Own</h3>
-            <p>Private site</p>
+            <form id="ownForm" onsubmit="checkOwn(); return false;">
+                <label for="own"> password:</label>
+                <input type="password" id="own" name="own" required>
+                <button type="submit">Submit</button>
+            </form>
         </div>
     </div>
 </section>
@@ -115,6 +119,26 @@
     <p>By Roger Ros</p>
     <p>This is a private page intended for authorized use only. Unauthorized use is prohibited.</p>
 </footer>
+
+<script>
+    function checkPin() {
+        var pin = document.getElementById('pin').value;
+        if (pin === 'pin365!') {
+            window.location.href = 'pagina_autorizada_pin.html';
+        } else {
+            alert('Invalid pin. Access denied.');
+        }
+    }
+
+    function checkOwn() {
+        var own = document.getElementById('own').value;
+        if (own === 'mrblack') {
+            window.location.href = 'pagina_autorizada_own.html';
+        } else {
+            alert('Invalid password. Access denied.');
+        }
+    }
+</script>
 
 </body>
 </html>
