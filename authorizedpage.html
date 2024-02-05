@@ -5,39 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Selector</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f7f7f7;
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        #fileList {
-            list-style: none;
-            padding: 0;
-        }
-        #fileList li {
-            margin-bottom: 10px;
-        }
-        .file-link {
-            display: inline-block;
-            margin-right: 10px;
-        }
-        .delete-btn {
-            background-color: #f44336;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+        /* Estilos CSS aquí */
     </style>
 </head>
 <body>
@@ -50,6 +18,7 @@
 </div>
 
 <script>
+    // Función para cargar archivos
     function uploadFiles() {
         var files = document.getElementById('fileInput').files;
         var fileList = document.getElementById('fileList');
@@ -71,11 +40,14 @@
             deleteBtn.className = 'delete-btn';
             deleteBtn.onclick = function() {
                 listItem.remove();
+                updateLocalStorage(); // Actualizar almacenamiento local después de eliminar un archivo
             };
             listItem.appendChild(deleteBtn);
 
             fileList.appendChild(listItem);
         }
+
+        updateLocalStorage(); // Actualizar almacenamiento local después de cargar archivos
     }
 
     function getFileSize(size) {
@@ -85,6 +57,49 @@
         var i = Math.floor(Math.log(size) / Math.log(k));
         return parseFloat((size / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
+
+    // Función para actualizar el almacenamiento local con los archivos cargados
+    function updateLocalStorage() {
+        var files = [];
+        var fileList = document.getElementById('fileList').getElementsByTagName('a');
+
+        for (var i = 0; i < fileList.length; i++) {
+            var fileName = fileList[i].textContent.split(' ')[0]; // Obtener nombre de archivo sin tamaño
+            files.push(fileName);
+        }
+
+        localStorage.setItem('uploadedFiles', JSON.stringify(files)); // Guardar lista de archivos en localStorage
+    }
+
+    // Función para cargar archivos guardados en el almacenamiento local al cargar la página
+    window.onload = function() {
+        var uploadedFiles = JSON.parse(localStorage.getItem('uploadedFiles'));
+
+        if (uploadedFiles) {
+            var fileList = document.getElementById('fileList');
+
+            for (var i = 0; i < uploadedFiles.length; i++) {
+                var fileName = uploadedFiles[i];
+                var listItem = document.createElement('li');
+                var fileLink = document.createElement('a');
+                fileLink.href = '#'; // Enlace ficticio
+                fileLink.textContent = fileName;
+                fileLink.className = 'file-link';
+                listItem.appendChild(fileLink);
+
+                var deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.onclick = function() {
+                    listItem.remove();
+                    updateLocalStorage(); // Actualizar almacenamiento local después de eliminar un archivo
+                };
+                listItem.appendChild(deleteBtn);
+
+                fileList.appendChild(listItem);
+            }
+        }
+    };
 </script>
 
 </body>
