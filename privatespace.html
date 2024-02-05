@@ -61,6 +61,15 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .back-btn {
+            background-color: #777777;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -69,6 +78,7 @@
     <h2>Code Selector</h2>
     <textarea id="codeInput" placeholder="Paste code here..." rows="6" cols="50"></textarea>
     <button onclick="uploadCode()">Add Code</button>
+    <button onclick="goToIndex()">Back to index.html</button>
     <ul id="codeList"></ul>
 </div>
 
@@ -124,7 +134,12 @@
         document.body.removeChild(textarea);
         alert('Code copied to clipboard!');
     }
+
+    function goToIndex() {
+        window.location.href = 'index.html';
+    }
 </script>
 
 </body>
 </html>
+```
