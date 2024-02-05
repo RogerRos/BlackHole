@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Selector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #codeList {
+            list-style: none;
+            padding: 0;
+        }
+        #codeList li {
+            margin-bottom: 10px;
+        }
+        .code-content {
+            display: block;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .copy-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .edit-btn {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Code Selector</h2>
+    <textarea id="codeInput" placeholder="Paste code here..." rows="6" cols="50"></textarea>
+    <button onclick="uploadCode()">Add Code</button>
+    <ul id="codeList"></ul>
+</div>
+
+<script>
+    function uploadCode() {
+        var code = document.getElementById('codeInput').value;
+        var codeList = document.getElementById('codeList');
+
+        if (code.trim() !== '') {
+            var listItem = document.createElement('li');
+            var codeContent = document.createElement('textarea');
+            codeContent.value = code;
+            codeContent.className = 'code-content';
+            listItem.appendChild(codeContent);
+
+            var copyBtn = document.createElement('button');
+            copyBtn.textContent = 'Copy';
+            copyBtn.className = 'copy-btn';
+            copyBtn.onclick = function() {
+                copyCodeToClipboard(codeContent.value);
+            };
+            listItem.appendChild(copyBtn);
+
+            var editBtn = document.createElement('button');
+            editBtn.textContent = 'Edit';
+            editBtn.className = 'edit-btn';
+            editBtn.onclick = function() {
+                codeContent.disabled = !codeContent.disabled;
+            };
+            listItem.appendChild(editBtn);
+
+            var deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.onclick = function() {
+                listItem.remove();
+            };
+            listItem.appendChild(deleteBtn);
+
+            codeList.appendChild(listItem);
+            document.getElementById('codeInput').value = '';
+        } else {
+            alert('Please paste some code.');
+        }
+    }
+
+    function copyCodeToClipboard(code) {
+        var textarea = document.createElement('textarea');
+        textarea.value = code;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('Code copied to clipboard!');
+    }
+</script>
+
+</body>
+</html>
