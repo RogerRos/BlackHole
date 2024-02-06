@@ -3,142 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackHole</title>
+    <title>Secure Access</title>
     <style>
         body {
+            background-color: #000;
+            color: #fff;
             font-family: Arial, sans-serif;
+            text-align: center;
             margin: 0;
             padding: 0;
-            background-color: #f7f7f7;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-        nav {
-            background-color: #444;
-            padding: 10px;
-            text-align: center;
-        }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-        section {
-            padding: 20px;
-            margin: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            grid-gap: 20px;
-        }
-        .card {
-            background-color: #f9f9f9;
+            margin-top: 100px;
             padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            border: 3px solid #333;
+            border-radius: 10px;
+            background-color: #111;
+            box-shadow: 0 0 20px #333;
+            width: 400px;
+            margin: auto;
         }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        h1 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #ff4500;
         }
-        footer {
-            background-color: #333;
+        .input-container {
+            margin-bottom: 20px;
+        }
+        input[type="password"] {
+            background-color: #222;
+            border: 1px solid #555;
             color: #fff;
-            padding: 20px;
-            text-align: center;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
         }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #555; /* Color gris */
-            color: white;
-            text-align: center;
-            text-decoration: none;
+        input[type="submit"] {
+            background-color: #ff4500;
+            color: #fff;
             border: none;
-            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        .btn:hover {
-            background-color: #444; /* Color gris más oscuro al pasar el mouse */
+        input[type="submit"]:hover {
+            background-color: #d32f00;
+        }
+        .message {
+            color: #ff0000;
+            font-style: italic;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-
-<header>
-    <h1>BlackHole</h1>
-</header>
-
-<nav>
-    <!-- <a href="#" class="btn">Inicio</a>
-    <a href="#" class="btn">Acerca de</a>
-    <a href="#" class="btn">Servicios</a>
-    <a href="#" class="btn">Contacto</a> -->
-</nav>
-
-<section class="container">
-    <!-- <h2>Productos Destacados</h2> -->
-    <div class="grid">
-        <div class="card">
-            <h3>Pin</h3>
-            <form id="pinForm" onsubmit="checkPin(); return false;">
-                <label for="pin">code:</label>
-                <input type="text" id="pin" name="pin" required>
-                <button type="submit">Submit</button>
-            </form>
-        </div>
-        <div class="card">
-            <h3>Own</h3>
-            <form id="ownForm" onsubmit="checkOwn(); return false;">
-                <label for="own"> password:</label>
-                <input type="password" id="own" name="own" required>
-                <button type="submit">Submit</button>
-            </form>
+    <div class="container">
+        <h1>Access Control System</h1>
+        <form action="#" method="post">
+            <div class="input-container">
+                <input type="password" name="password" placeholder="Enter access code..." autocomplete="off">
+            </div>
+            <input type="submit" value="Login">
+        </form>
+        <div class="message">
+            <?php
+            // Verificación de la contraseña
+            $stored_hash = '$2y$10$WzoV6fd/MblF9dCvXVvwVOv8uwU3w0GMG9a8Gg2QD6wOuY/Vj5lxO'; // Hash almacenado de la contraseña "secure123"
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                $password = $_POST['password'];
+                // Capa 1: Verificar si la contraseña coincide con el hash almacenado
+                if (password_verify($password, $stored_hash)) {
+                    // Capa 2: Generar un token de sesión único
+                    session_start();
+                    $_SESSION['authenticated'] = true;
+                    echo "Access granted. Welcome.";
+                } else {
+                    echo "Access denied. Invalid credentials.";
+                }
+            }
+            ?>
         </div>
     </div>
-</section>
-
-<footer>
-    <p>By Roger Ros</p>
-    <p>This is a private page intended for authorized use only. Unauthorized use is prohibited.</p>
-</footer>
-
-<script>
-    function checkPin() {
-        var pin = document.getElementById('pin').value;
-        if (pin === 'pin365!') {
-            window.location.href = 'authorizedpage.html';
-        } else {
-            alert('Invalid pin. Access denied.');
-        }
-    }
-
-    function checkOwn() {
-        var own = document.getElementById('own').value;
-        if (own === 'mrblack') {
-            window.location.href = 'privatespace.html';
-        } else {
-            alert('Invalid password. Access denied.');
-        }
-    }
-</script>
-
 </body>
 </html>
